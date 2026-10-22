@@ -72,29 +72,42 @@ export function isOffline() {
     return offline;
 }
 
-export async function listStudents(department = '') {
+// Uses the backend while it is reachable; a network failure (TypeError from
+// fetch) switches every later call to browser storage.
+async function withFallback(remote, fallback) {
     if (!offline) {
         try {
-            const query = department ? `?department=${encodeURIComponent(department)}` : '';
-            return await request(API + query);
+            return await remote();
         } catch (error) {
             if (!(error instanceof TypeError)) throw error;
             offline = true;
         }
     }
-    return local.list(department);
+    return fallback();
+}
+
+export async function listStudents(department = '') {
+    const query = department ? `?department=${encodeURIComponent(department)}` : '';
+    return withFallback(() => request(API + query), () => local.list(department));
 }
 
 export async function addStudent(student) {
-    return offline ? local.add(student) : request(API, { method: 'POST', ...json(student) });
+    return withFallback(
+        () => request(API, { method: 'POST', ...json(student) }),
+        () => local.add(student)
+    );
 }
 
 export async function updateStudent(id, student) {
-    return offline
-        ? local.update(id, student)
-        : request(`${API}/${id}`, { method: 'PUT', ...json(student) });
+    return withFallback(
+        () => request(`${API}/${id}`, { method: 'PUT', ...json(student) }),
+        () => local.update(id, student)
+    );
 }
 
 export async function deleteStudent(id) {
-    return offline ? local.remove(id) : request(`${API}/${id}`, { method: 'DELETE' });
+    return withFallback(
+        () => request(`${API}/${id}`, { method: 'DELETE' }),
+        () => local.remove(id)
+    );
 }
