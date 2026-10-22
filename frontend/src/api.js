@@ -50,16 +50,16 @@ const local = {
     add(student) {
         const record = { _id: Date.now().toString(36), ...clean(student) };
         writeLocal([...readLocal(), record]);
-        return { ...record, message: 'Student added successfully' };
+        return { ...record, message: 'Participant registered successfully' };
     },
     update(id, student) {
         const record = clean(student);
         writeLocal(readLocal().map(s => (s._id === id ? { ...s, ...record } : s)));
-        return { message: 'Student updated successfully' };
+        return { message: 'Participant updated successfully' };
     },
     remove(id) {
         writeLocal(readLocal().filter(s => s._id !== id));
-        return { message: 'Student deleted successfully' };
+        return { message: 'Participant removed successfully' };
     }
 };
 

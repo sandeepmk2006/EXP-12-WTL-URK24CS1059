@@ -50,7 +50,7 @@ app.post('/api/students', async (req, res) => {
         res.status(201).json({
             _id: result.insertedId,
             ...student,
-            message: 'Student added successfully'
+            message: 'Participant registered successfully'
         });
     } catch (error) {
         res.status(500).json({ error: 'Unable to add student' });
@@ -81,7 +81,7 @@ app.put('/api/students/:id', async (req, res) => {
             return res.status(404).json({ error: 'Student not found' });
         }
 
-        res.json({ message: 'Student updated successfully' });
+        res.json({ message: 'Participant updated successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Unable to update student' });
     }
@@ -101,7 +101,7 @@ app.delete('/api/students/:id', async (req, res) => {
             return res.status(404).json({ error: 'Student not found' });
         }
 
-        res.json({ message: 'Student deleted successfully' });
+        res.json({ message: 'Participant removed successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Unable to delete student' });
     }
