@@ -65,7 +65,7 @@ function App() {
     }
 
     async function removeStudent(id) {
-        if (!window.confirm('Delete this student?')) return;
+        if (!window.confirm('Remove this participant?')) return;
 
         try {
             const data = await deleteStudent(id);
@@ -88,10 +88,13 @@ function App() {
 
     return (
         <main className="container">
-            <h1>Student Management System</h1>
-            <p className="subtitle">
-                Frontend: React.js · Backend: Node.js + Express.js · Database: MongoDB
-            </p>
+            <header className="hero">
+                <span className="badge">🔬 Annual Science Fair 2026</span>
+                <h1>Science Fair Project Registry</h1>
+                <p className="subtitle">
+                    Register, track and manage student participants · React.js · Node.js + Express.js · MongoDB
+                </p>
+            </header>
             {isOffline() && (
                 <p className="notice">
                     Backend not reachable, running in demo mode (records are saved in this browser).
@@ -99,7 +102,7 @@ function App() {
             )}
 
             <section className="card">
-                <h2>{editId ? 'Edit Student' : 'Add Student'}</h2>
+                <h2>{editId ? '🧪 Edit Participant' : '🧪 Register Participant'}</h2>
                 <form onSubmit={handleSubmit}>
                     <input
                         name="regNo"
@@ -110,7 +113,7 @@ function App() {
                     />
                     <input
                         name="name"
-                        placeholder="Student Name"
+                        placeholder="Participant Name"
                         value={form.name}
                         onChange={handleChange}
                         required
@@ -123,7 +126,7 @@ function App() {
                         required
                     />
                     <button type="submit" className="primary">
-                        {editId ? 'Update Student' : 'Add Student'}
+                        {editId ? 'Update Participant' : 'Register'}
                     </button>
                     {editId && (
                         <button type="button" onClick={resetForm}>
@@ -135,7 +138,7 @@ function App() {
             </section>
 
             <section className="card">
-                <h2>Student Records</h2>
+                <h2>⚗️ Registered Participants</h2>
                 <form onSubmit={handleSearch}>
                     <input
                         placeholder="Search by Department"
@@ -158,7 +161,7 @@ function App() {
                     <tbody>
                         {students.length === 0 && (
                             <tr>
-                                <td colSpan="4" className="empty">No student records found</td>
+                                <td colSpan="4" className="empty">No participants registered yet</td>
                             </tr>
                         )}
                         {students.map(student => (
